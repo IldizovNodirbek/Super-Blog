@@ -1,11 +1,11 @@
 import { motion } from "framer-motion";
 
-export default function FiveG() {
+export default function Blockchain() {
   return (
-    <section className="flex flex-col items-center text-center space-y-8 py-20 bg-black">
+    <section className="flex flex-col items-center text-center space-y-8 py-20 bg-gradient-to-b from-black via-gray-800 to-black">
       <motion.img
-        src="/images/5g-network.jpg"
-        alt="5G Network"
+        src="/images/blockchain-network.jpg"
+        alt="Blockchain"
         initial={{ scale: 0.5, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 1.2, ease: [0.43, 0.13, 0.23, 0.96] }}
@@ -16,9 +16,9 @@ export default function FiveG() {
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5, duration: 1 }}
-        className="text-3xl md:text-5xl font-bold text-purple-400"
+        className="text-3xl md:text-5xl font-bold text-yellow-400"
       >
-        5G Tarmog'i
+        Blokcheyn Texnologiyasi
       </motion.h2>
 
       <motion.p
@@ -27,10 +27,10 @@ export default function FiveG() {
         transition={{ delay: 0.7, duration: 1 }}
         className="text-lg text-gray-300 max-w-4xl leading-relaxed"
       >
-        5G — bu yangi avlod simsiz texnologiya, ultra-tez internet tezligi, kam
-        kechikish va millionlab qurilmalarni birlashtirish imkonini beradi. 5G
-        sanoat avtomatizatsiyasi, aqlli shaharlar va virtual haqiqat uchun
-        asosiy poydevor hisoblanadi.
+        Blokcheyn — bu markazlashtirilmagan, shaffof va xavfsiz ma'lumotlar
+        bazasidir. U tranzaksiyalarni ishonchli saqlash, smart shartnomalarni
+        yaratish va yangi moliyaviy ekotizimlarni rivojlantirish uchun
+        ishlatiladi.
       </motion.p>
     </section>
   );
