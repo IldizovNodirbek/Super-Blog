@@ -1,4 +1,4 @@
-# Quantum Technologies Web Application
+# SUPER BLOG - Full Animation Project
 
 ## Overview
 
