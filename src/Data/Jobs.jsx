@@ -4,19 +4,18 @@ import job3 from "../Images/data-science-group.png";
 import job4 from "../Images/green-energy-engineers.png";
 import job5 from "../Images/financial-analysts.png";
 import job6 from "../Images/cybersecurity-group.png";
-// import hero images 
+// import hero images
 import hero1 from "../Images/ai-prompt-main-img.png";
 import hero2 from "../Images/blockchain-main-img.png";
 import hero3 from "../Images/data-sc-main-img.png";
 import hero4 from "../Images/green-energy-main-img.png";
-import hero5 from "../Images/green-energy-main-img.png";
+import hero5 from "../Images/financial-analytc.png";
 import hero6 from "../Images/cyber-sec-main-img.png";
-
 
 const jobs = [
   {
     id: 1,
-    title: "Who is an AI Prompt Engineer?",
+    title: "AI Prompt Engineer?",
     image: job1,
     heroImage: hero1,
     paragraphs: [
