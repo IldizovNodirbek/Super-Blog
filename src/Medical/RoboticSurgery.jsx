@@ -27,41 +27,34 @@ const paragraphs = [
 ];
 
 export default function RoboticSurgery() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isTyping, setIsTyping] = useState(false);
-  const [showStatic, setShowStatic] = useState(true);
+  const [currentIndex, setCurrentIndex] = useState(-1); // -1 bilan boshida bo‘sh
+
+  // Sarlavha uchun typewriter
   const [title] = useTypewriter({
     words: ["Robotic Surgery"],
     loop: false,
     typeSpeed: 90,
-    deleteSpeed: 40,
     delaySpeed: 1500,
   });
 
-  // Typewriter faqat o'tish jarayonida ishlaydi
-  const [paragraphText] = useTypewriter({
-    words: [paragraphs[currentIndex].text],
+  // Paragraf uchun typewriter
+  const [paragraphText, { isDone }] = useTypewriter({
+    words: currentIndex >= 0 ? [paragraphs[currentIndex].text] : [""],
     loop: false,
     typeSpeed: 30,
     deleteSpeed: 20,
     delaySpeed: 500,
-    onType: () => setIsTyping(true),
-    onDone: () => {
-      setIsTyping(false);
-      setShowStatic(true);
-    },
+    key: currentIndex, // currentIndex o‘zgarganda typewriter qayta ishga tushadi
   });
 
   const handleNext = () => {
-    setShowStatic(false);
-    setIsTyping(true);
-    setCurrentIndex((prev) => (prev + 1) % paragraphs.length);
-  };
-
-  const handlePrevious = () => {
-    setShowStatic(false);
-    setIsTyping(true);
-    setCurrentIndex(0);
+    setCurrentIndex((prev) => {
+      if (prev < paragraphs.length - 1) {
+        return prev + 1;
+      } else {
+        return 0; // Oxirgi bo‘limdan boshiga qaytish
+      }
+    });
   };
 
   // Animatsiya variantlari
@@ -70,15 +63,29 @@ export default function RoboticSurgery() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.8, ease: [0.6, -0.05, 0.01, 0.99] },
+      transition: { duration: 0.8, ease: "easeOut" },
+    },
+  };
+
+  const imageVariants = {
+    hidden: { opacity: 0, scale: 0.5 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: { duration: 0.6, ease: "easeOut", type: "tween" },
+    },
+    hover: {
+      scale: 1.02,
+      boxShadow: "0 0 40px rgba(59, 130, 246, 0.6)",
+      transition: { duration: 0.3 },
     },
   };
 
   const titleVariants = {
-    hidden: { opacity: 0, x: -50 },
+    hidden: { opacity: 0, scale: 0.8 },
     visible: {
       opacity: 1,
-      x: 0,
+      scale: 1,
       transition: { duration: 0.8, ease: "easeOut" },
     },
   };
@@ -88,7 +95,7 @@ export default function RoboticSurgery() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.5, delay: 0.3 },
+      transition: { duration: 0.5 },
     },
     exit: {
       opacity: 0,
@@ -102,97 +109,81 @@ export default function RoboticSurgery() {
     tap: { scale: 0.95 },
   };
 
-  const previousButtonVariants = {
-    hover: { scale: 1.05, boxShadow: "0 0 15px rgba(249, 115, 22, 0.7)" },
-    tap: { scale: 0.95 },
-  };
-
   return (
     <motion.div
-      className="relative min-h-screen px-4 md:px-8 py-12 font-['Roboto'] text-gray-800 overflow-hidden"
+      className="relative min-h-screen px-4 sm:px-8 py-12 font-['Roboto'] text-gray-800 overflow-hidden"
       initial={{ background: "linear-gradient(135deg, #1e3a8a, #3b82f6)" }}
       animate={{ background: "linear-gradient(135deg, #3b82f6, #1e3a8a)" }}
       transition={{ duration: 5, repeat: Infinity, repeatType: "reverse" }}
     >
+      {/* Hero Rasm */}
+      <motion.div
+        className="flex justify-center mb-12"
+        variants={imageVariants}
+        initial="hidden"
+        animate="visible"
+        whileHover="hover"
+      >
+        <img
+          src={RoboticSurgeryImage}
+          alt="Robotic Surgery Hero"
+          className="w-full max-w-6xl h-[50vh] sm:h-[60vh] md:h-[70vh] rounded-2xl shadow-[0_0_40px_#3B82F6] object-cover"
+          loading="lazy"
+        />
+      </motion.div>
+
       {/* Sarlavha */}
       <motion.h1
-        className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white mb-6 tracking-wide drop-shadow-lg text-center"
+        className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white mb-8 tracking-wide drop-shadow-lg text-center"
         variants={titleVariants}
         initial="hidden"
         animate="visible"
       >
         {title}
-        <Cursor />
+        <Cursor cursorStyle="_" cursorColor="#ffffff" />
       </motion.h1>
 
       {/* Kontent Qutisi */}
       <motion.div
-        className="max-w-4xl mx-auto bg-blue-900/90 backdrop-blur-md p-8 rounded-2xl shadow-[0_0_30px_rgba(59,130,246,0.8)]"
+        className="max-w-4xl mx-auto bg-blue-900/90 backdrop-blur-md p-6 sm:p-8 rounded-2xl shadow-[0_0_30px_rgba(59,130,246,0.8)]"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
         <AnimatePresence mode="wait">
-          <motion.div
-            key={currentIndex}
-            className="text-center"
-            variants={paragraphVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-          >
-            <h2 className="text-2xl font-bold text-white mb-4">
-              {paragraphs[currentIndex].title}
-            </h2>
-            <p className="text-lg text-gray-200 leading-relaxed tracking-wide">
-              {showStatic && !isTyping
-                ? paragraphs[currentIndex].text
-                : paragraphText}
-            </p>
-          </motion.div>
+          {currentIndex >= 0 && (
+            <motion.div
+              key={currentIndex}
+              className="text-center"
+              variants={paragraphVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+            >
+              <h2 className="text-xl sm:text-2xl font-bold text-white mb-4">
+                {paragraphs[currentIndex].title}
+              </h2>
+              <p className="text-base sm:text-lg text-gray-200 leading-relaxed tracking-wide">
+                {paragraphText}
+                {isDone && <Cursor cursorStyle="_" cursorColor="#ffffff" />}
+              </p>
+            </motion.div>
+          )}
         </AnimatePresence>
 
         {/* Tugmalar */}
         <div className="mt-6 flex justify-center gap-4">
-          {currentIndex < paragraphs.length - 1 ? (
-            <motion.button
-              className="px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow-md"
-              onClick={handleNext}
-              variants={buttonVariants}
-              whileHover="hover"
-              whileTap="tap"
-              disabled={isTyping}
-            >
-              Next
-            </motion.button>
-          ) : (
-            <motion.button
-              className="px-6 py-3 bg-orange-500 text-white font-semibold rounded-lg shadow-md"
-              onClick={handlePrevious}
-              variants={previousButtonVariants}
-              whileHover="hover"
-              whileTap="tap"
-              disabled={isTyping}
-            >
-              Previous
-            </motion.button>
-          )}
+          <motion.button
+            className="px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow-md"
+            onClick={handleNext}
+            variants={buttonVariants}
+            whileHover="hover"
+            whileTap="tap"
+            disabled={isDone === false} // Yozish tugamaguncha tugma ishlamaydi
+          >
+            Next
+          </motion.button>
         </div>
-      </motion.div>
-
-      {/* Hero Rasm */}
-      <motion.div
-        className="flex justify-center mt-12"
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1.2, ease: "easeOut" }}
-      >
-        <img
-          src={RoboticSurgeryImage}
-          alt="Robotic Surgery Hero"
-          className="w-full max-w-6xl rounded-2xl shadow-[0_0_80px_#3B82F6]"
-          loading="lazy"
-        />
       </motion.div>
     </motion.div>
   );
