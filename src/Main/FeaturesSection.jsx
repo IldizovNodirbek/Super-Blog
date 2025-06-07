@@ -55,10 +55,13 @@ const FeatureCard = ({ title, desc, iconColor, glow, i }) => (
     whileInView="visible"
     viewport={{ once: true }}
     whileHover="hover"
+    whileTap="tap"
     className={`relative group bg-gradient-to-br ${glow} p-[2px] rounded-2xl shadow-xl transition-transform duration-500 hover:scale-105`}
   >
-    {/* Card inner background */}
-    <div className="bg-[#15151a] rounded-2xl h-full w-full p-7 flex flex-col items-center relative z-10 overflow-hidden">
+    <motion.div
+      className="bg-[#15151a] rounded-2xl h-full w-full p-7 flex flex-col items-center relative z-10 overflow-hidden"
+      whileTap={{ scale: 0.96 }}
+    >
       {/* Animated icon */}
       <motion.div
         variants={iconVariants}
@@ -76,7 +79,16 @@ const FeatureCard = ({ title, desc, iconColor, glow, i }) => (
       <div
         className={`absolute inset-0 rounded-2xl pointer-events-none opacity-0 group-hover:opacity-60 transition duration-500 bg-gradient-to-br ${glow} blur-xl`}
       />
-    </div>
+      {/* Gradient overlay on tap */}
+      <motion.div
+        className="absolute inset-0 rounded-2xl pointer-events-none opacity-0"
+        whileTap={{ opacity: 0.5 }}
+        style={{
+          background:
+            "linear-gradient(120deg, rgba(34,211,238,0.18) 0%, rgba(236,72,153,0.18) 100%)",
+        }}
+      />
+    </motion.div>
   </motion.div>
 );
 
@@ -101,7 +113,7 @@ export default function FeaturesSection() {
           transition={{ duration: 0.7, type: "spring", stiffness: 120 }}
           className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-cyan-400 mb-14 drop-shadow-lg"
         >
-          Sayt Xususiyatlari
+          Site Features
         </motion.h2>
         <div className="grid gap-10 grid-cols-1 md:grid-cols-3">
           {features.map((item, i) => (

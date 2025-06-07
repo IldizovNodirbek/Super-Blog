@@ -16,7 +16,7 @@ export default function RegenerativeMedicine() {
         Regenerative Medicine
       </motion.h1>
 
-      {/* Hero Images Section */}
+      {/* Hero Images Section with whileTap and hawrang shadow */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-16">
         {[
           { src: StemCell, title: "Stem Cell Therapy" },
@@ -28,7 +28,11 @@ export default function RegenerativeMedicine() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.2, duration: 0.6 }}
-            className="bg-white/90 backdrop-blur-md rounded-xl shadow-xl p-4 border-t-4 border-[#64b5f6]"
+            whileTap={{
+              scale: 0.96,
+              boxShadow: "0 0 32px 0 #1976d2, 0 0 0 4px #90caf9",
+            }}
+            className="bg-white/90 backdrop-blur-md rounded-xl shadow-xl p-4 border-t-4 border-[#64b5f6] transition-all duration-200"
           >
             <img
               src={src}
@@ -42,85 +46,110 @@ export default function RegenerativeMedicine() {
         ))}
       </div>
 
-      {/* Informative Animated Paragraphs */}
+      {/* Informative Animated Paragraphs with neon airy gradient shadow */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="bg-white/90 backdrop-blur-md p-8 rounded-xl shadow-xl border-l-4 border-[#66bb6a] space-y-6"
+        className="relative bg-white/90 backdrop-blur-md p-4 sm:p-8 rounded-xl shadow-xl border-l-4 border-[#66bb6a] space-y-4 sm:space-y-6 overflow-hidden"
       >
-        <h2 className="text-2xl font-bold text-[#388e3c] drop-shadow-[0_0_5px_#a5d6a7]">
-         Life-changing healing techniques
-        </h2>
-        <p className="text-gray-700 text-lg leading-relaxed">
-         Regenerative medicine is the restoration of the human body itself
-          cells, tissues and organs using the ability
-          is an advanced medical approach focused on re-creation.
-        </p>
-        <ul className="list-disc list-inside text-gray-700 space-y-2">
-          <li>
-            <strong>Stem Cell Therapy:</strong> External or internal factors
-            renewal of damaged tissues.
-          </li>
-          <li>
-            <strong>Tissue Engineering:</strong> Grown in the laboratory
-            transplanting artificial tissues to the patient.
-          </li>
-          <li>
-            <strong>3D Bioprinting:</strong> To the patient through a special bioprinter
-            creating a suitable tissue structure.
-          </li>
-        </ul>
-        <div className="bg-[#e8f5e9] p-4 rounded-lg border-l-4 border-[#66bb6a] text-[#2e7d32] font-semibold">
-          The future of medicine is to create a body that can heal itself
-          starts with the opportunity.
+        {/* Neon airy linear-gradient shadow */}
+        <div
+          className="absolute inset-0 rounded-xl pointer-events-none z-0"
+          style={{
+            background:
+              "linear-gradient(100deg,rgba(102,187,106,0.18) 0%,rgba(66,165,245,0.18) 100%)",
+            filter: "blur(18px)",
+            opacity: 0.7,
+          }}
+        />
+        <div className="relative z-10">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#388e3c] drop-shadow-[0_0_5px_#a5d6a7]">
+            Life-changing healing techniques
+          </h2>
+          <p className="text-gray-700 text-base sm:text-lg leading-relaxed break-words">
+            Regenerative medicine is the restoration of the human body itself
+            cells, tissues and organs using the ability is an advanced medical
+            approach focused on re-creation.
+          </p>
+          <ul className="list-disc list-inside text-gray-700 space-y-2">
+            <li>
+              <strong>Stem Cell Therapy:</strong> External or internal factors
+              renewal of damaged tissues.
+            </li>
+            <li>
+              <strong>Tissue Engineering:</strong> Grown in the laboratory
+              transplanting artificial tissues to the patient.
+            </li>
+            <li>
+              <strong>3D Bioprinting:</strong> To the patient through a special
+              bioprinter creating a suitable tissue structure.
+            </li>
+          </ul>
+          <div className="bg-[#e8f5e9] p-3 sm:p-4 rounded-lg border-l-4 border-[#66bb6a] text-[#2e7d32] font-semibold text-sm sm:text-base">
+            The future of medicine is to create a body that can heal itself
+            starts with the opportunity.
+          </div>
         </div>
       </motion.div>
 
-      {/* Qo‘shimcha ilhomlantiruvchi paragraflar */}
+      {/* Inspirational Paragraphs with neon airy gradient shadow */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="bg-white/90 backdrop-blur-md p-8 rounded-xl shadow-xl border-l-4 border-[#42a5f5] space-y-6 mt-16"
+        className="relative bg-white/90 backdrop-blur-md p-4 sm:p-8 rounded-xl shadow-xl border-l-4 border-[#42a5f5] space-y-4 sm:space-y-6 mt-10 sm:mt-16 overflow-hidden"
       >
-        <h2 className="text-2xl font-bold text-[#1976d2] drop-shadow-[0_0_5px_#90caf9]">
-          Rebuilding Hope: Every Cell Matters
-        </h2>
-        <p className="text-gray-700 text-lg leading-relaxed">
-         Each cell is the beginning of vital energy in our body
-          point. Regenerative medicine reactivates these cells
-          through injury, disease or aging
-          aimed at restoring opportunities.
-        </p>
+        {/* Neon airy linear-gradient shadow */}
+        <div
+          className="absolute inset-0 rounded-xl pointer-events-none z-0"
+          style={{
+            background:
+              "linear-gradient(100deg,rgba(66,165,245,0.18) 0%,rgba(144,202,249,0.18) 100%)",
+            filter: "blur(18px)",
+            opacity: 0.7,
+          }}
+        />
+        <div className="relative z-10">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#1976d2] drop-shadow-[0_0_5px_#90caf9]">
+            Rebuilding Hope: Every Cell Matters
+          </h2>
+          <p className="text-gray-700 text-base sm:text-lg leading-relaxed break-words">
+            Each cell is the beginning of vital energy in our body point.
+            Regenerative medicine reactivates these cells through injury,
+            disease or aging aimed at restoring opportunities.
+          </p>
 
-        <h2 className="text-2xl font-bold text-[#1976d2] drop-shadow-[0_0_5px_#90caf9]">
-          Harmony of technology and nature
-        </h2>
-        <p className="text-gray-700 text-lg leading-relaxed">
-          Medical innovations, especially technologies such as 3D Bioprinting,
-          to the patient's body, perfectly repeating the patterns of biological structures
-          creates tailored treatment options. This is technology and
-          it is the most perfect example of nature complementing each other.
-        </p>
+          <h2 className="text-xl sm:text-2xl font-bold text-[#1976d2] drop-shadow-[0_0_5px_#90caf9]">
+            Harmony of technology and nature
+          </h2>
+          <p className="text-gray-700 text-base sm:text-lg leading-relaxed break-words">
+            Medical innovations, especially technologies such as 3D Bioprinting,
+            to the patient's body, perfectly repeating the patterns of
+            biological structures creates tailored treatment options. This is
+            technology and it is the most perfect example of nature
+            complementing each other.
+          </p>
 
-        <h2 className="text-2xl font-bold text-[#1976d2] drop-shadow-[0_0_5px_#90caf9]">
-          An individual solution for each patient
-        </h2>
-        <p className="text-gray-700 text-lg leading-relaxed">
-          Regenerative medicine is not generic, but individual genetics
-          offers a solution based on the structure. This approach is for each patient
-          individual attention and high results in health restoration
-          allows to achieve.
-        </p>
+          <h2 className="text-xl sm:text-2xl font-bold text-[#1976d2] drop-shadow-[0_0_5px_#90caf9]">
+            An individual solution for each patient
+          </h2>
+          <p className="text-gray-700 text-base sm:text-lg leading-relaxed break-words">
+            Regenerative medicine is not generic, but individual genetics offers
+            a solution based on the structure. This approach is for each patient
+            individual attention and high results in health restoration allows
+            to achieve.
+          </p>
 
-        <div className="bg-[#e3f2fd] p-4 rounded-lg border-l-4 border-[#42a5f5] text-[#1565c0] font-semibold">
-          Future-oriented medicine is not only about treating the disease, but also about it
-          means prevention, recovery and building a stronger body.
+          <div className="bg-[#e3f2fd] p-3 sm:p-4 rounded-lg border-l-4 border-[#42a5f5] text-[#1565c0] font-semibold text-sm sm:text-base">
+            Future-oriented medicine is not only about treating the disease, but
+            also about it means prevention, recovery and building a stronger
+            body.
+          </div>
         </div>
       </motion.div>
 
-      {/* Technology Details Section */}
+      {/* Technology Details Section (unchanged) */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-16">
         {/* Stem Cell Therapy */}
         <motion.div

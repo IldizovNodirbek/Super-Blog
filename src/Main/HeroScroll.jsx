@@ -14,7 +14,7 @@ const texts = [
 
 const containerVariants = {
   hidden: {},
-  visible: {
+  visible: {  
     transition: {
       staggerChildren: 0.5,
     },

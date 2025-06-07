@@ -50,6 +50,9 @@ const cardGradients = [
 ];
 
 export default function StatsSection() {
+  // Track which card is pressed
+  const [pressedIndex, setPressedIndex] = useState(null);
+
   return (
     <section className="relative py-24 bg-[#181824] overflow-hidden">
       {/* Animated background gradient */}
@@ -83,6 +86,10 @@ export default function StatsSection() {
                 boxShadow: "0 0 32px 0 rgba(236,72,153,0.25)",
                 borderColor: "#fff",
               }}
+              whileTap={{ scale: 0.96 }}
+              onTapStart={() => setPressedIndex(index)}
+              onTapCancel={() => setPressedIndex(null)}
+              onTap={() => setPressedIndex(null)}
               transition={{
                 delay: index * 0.15,
                 duration: 0.7,
@@ -90,7 +97,9 @@ export default function StatsSection() {
                 stiffness: 120,
                 damping: 14,
               }}
-              className={`relative group bg-gradient-to-br ${cardGradients[index % cardGradients.length]} p-[2px] rounded-2xl shadow-xl`}
+              className={`relative group bg-gradient-to-br ${
+                cardGradients[index % cardGradients.length]
+              } p-[2px] rounded-2xl shadow-xl`}
             >
               <div className="bg-[#181824] rounded-2xl h-full w-full p-8 flex flex-col items-center justify-center relative z-10 overflow-hidden">
                 <Counter target={stat.value} suffix={stat.suffix} />
@@ -98,7 +107,23 @@ export default function StatsSection() {
                   {stat.label}
                 </p>
                 {/* Glow effect on hover */}
-                <div className={`absolute inset-0 rounded-2xl pointer-events-none opacity-0 group-hover:opacity-60 transition duration-500 bg-gradient-to-br ${cardGradients[index % cardGradients.length]} blur-xl`} />
+                <div
+                  className={`absolute inset-0 rounded-2xl pointer-events-none opacity-0 group-hover:opacity-60 transition duration-500 bg-gradient-to-br ${
+                    cardGradients[index % cardGradients.length]
+                  } blur-xl`}
+                />
+                {/* Gradient overlay on tap */}
+                <motion.div
+                  className="absolute inset-0 rounded-2xl pointer-events-none"
+                  animate={{
+                    opacity: pressedIndex === index ? 0.5 : 0,
+                  }}
+                  transition={{ duration: 0.15 }}
+                  style={{
+                    background:
+                      "linear-gradient(120deg, rgba(34,211,238,0.18) 0%, rgba(236,72,153,0.18) 100%)",
+                  }}
+                />
               </div>
             </motion.div>
           ))}

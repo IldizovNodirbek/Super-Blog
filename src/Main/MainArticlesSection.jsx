@@ -6,17 +6,17 @@ export default function ArticleSection() {
     {
       title: "Future Technologies",
       text: "Latest articles on artificial intelligence and robotics.",
-      path: "/current-technologies", // Route qo‘shamiz
+      path: "/current-technologies",
     },
     {
       title: "Medical Revolution",
       text: "Articles on new technologies and innovations in medicine.",
-      path: "medical-revolution"
+      path: "medical-revolution",
     },
     {
       title: "Future Jobs",
       text: "Articles on the most in-demand professions and their development in 2025 and in the future.",
-      path: "2025-year-jobs"
+      path: "2025-year-jobs",
     },
   ];
 
@@ -24,7 +24,7 @@ export default function ArticleSection() {
     <section className="min-h-screen bg-black text-white py-20 px-5">
       <div className="max-w-7xl mx-auto">
         <h2 className="text-4xl md:text-5xl font-bold text-center mb-16 bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-transparent bg-clip-text">
-          Eng So'nggi Maqolalar
+          Latest Articles
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           {cards.map((card, index) => (
@@ -40,14 +40,21 @@ export default function ArticleSection() {
               <p className="text-gray-300 mb-6">{card.text}</p>
               {card.path ? (
                 <Link to={card.path}>
-                  <button className="px-5 py-2 rounded-lg font-medium bg-gradient-to-r from-pink-500 to-red-500 text-white hover:from-orange-500 hover:to-pink-600 transition-all duration-300 shadow-lg shadow-pink-500/30">
+                  <motion.button
+                    whileTap={{ scale: 0.93, boxShadow: "0 0 0 2px #f472b6" }}
+                    className="px-5 py-2 rounded-lg font-medium bg-gradient-to-r from-pink-500 to-red-500 text-white hover:from-orange-500 hover:to-pink-600 transition-all duration-300 shadow-lg shadow-pink-500/30"
+                  >
                     Read More
-                  </button>
+                  </motion.button>
                 </Link>
               ) : (
-                <button className="px-5 py-2 rounded-lg font-medium bg-gradient-to-r from-pink-500 to-red-500 text-white cursor-not-allowed opacity-50">
+                <motion.button
+                  whileTap={{ scale: 0.93 }}
+                  className="px-5 py-2 rounded-lg font-medium bg-gradient-to-r from-pink-500 to-red-500 text-white cursor-not-allowed opacity-50"
+                  disabled
+                >
                   Coming Soon
-                </button>
+                </motion.button>
               )}
             </motion.div>
           ))}

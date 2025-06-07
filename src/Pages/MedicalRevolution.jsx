@@ -85,7 +85,7 @@ export default function MedicalRevolution() {
             className="w-72 p-6 bg-[#e3f2fd]/90 backdrop-blur-md shadow-2xl border-r-4 border-[#64b5f6] fixed top-0 left-0 h-full overflow-y-auto z-30"
           >
             <h2 className="text-2xl font-bold mb-10 text-[#1976d2] tracking-wide text-center drop-shadow-[0_0_8px_#90caf9]">
-              Bo‘limlar
+              Sections
             </h2>
             <ul className="space-y-6">
               {sections.map((section) => (

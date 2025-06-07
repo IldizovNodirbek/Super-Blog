@@ -16,21 +16,36 @@ const fadeUpVariant = {
   visible: { opacity: 1, y: 0 },
 };
 
-const paragraphVariant = {
-  hidden: { opacity: 0, x: -50, skew: 5 },
-  visible: { opacity: 1, x: 0, skew: 0 },
+const cardVariant = {
+  hidden: { opacity: 0, y: 40, scale: 0.97 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.7, type: "spring", stiffness: 120 },
+  },
 };
+
+const paragraphs = [
+  {
+    title: "AI in Everyday Life",
+    text: "Artificial Intelligence is seamlessly integrating into our daily routines, from smart assistants to personalized recommendations. Its presence is making technology more intuitive and accessible for everyone.",
+  },
+  {
+    title: "Transforming Industries",
+    text: "AI is revolutionizing industries like healthcare, finance, and transportation. With advanced data analysis and automation, businesses can make smarter decisions and deliver better services.",
+  },
+  {
+    title: "Ethics & The Future",
+    text: "As AI evolves, ethical considerations become crucial. Responsible development ensures AI benefits society, maintains transparency, and respects privacy and human values.",
+  },
+];
 
 export default function AIDevelopment() {
   const title = "AI Development";
-  const paragraphs = [
-    `Artificial Intelligence (AI) is revolutionizing the way we interact with technology. From automating daily tasks to powering intelligent systems in healthcare, finance, and transportation — AI is becoming the backbone of modern digital transformation.`,
-    `Thanks to deep learning and neural networks, machines can now recognize patterns, process natural language, and make decisions with increasing accuracy. AI enhances productivity, reduces human error, and opens the door to new innovations we once only dreamed of.`,
-    `As AI continues to evolve, ethical development, transparency, and responsible deployment become critical to ensure a balanced and beneficial impact on society. The future of AI is not only powerful — it's also promising, provided it's guided with care and purpose.`,
-  ];
 
   return (
-    <section className="relative py-20 px-4 sm:px-6 min-h-screen flex flex-col items-center">
+    <section className="relative py-20 px-2 sm:px-6 min-h-screen flex flex-col items-center">
       {/* Hero Image */}
       <motion.div
         initial={{ opacity: 0, scale: 0.85, rotate: -3 }}
@@ -53,7 +68,7 @@ export default function AIDevelopment() {
         whileInView="visible"
         transition={{ duration: 1 }}
         viewport={{ once: true }}
-        className="relative mt-10 text-[36px] sm:text-[48px] md:text-[58px] font-extrabold text-center font-[Orbitron]
+        className="relative mt-10 text-[32px] sm:text-[44px] md:text-[54px] font-extrabold text-center font-[Orbitron]
           bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-500
           text-transparent bg-clip-text drop-shadow-[0_0_20px_#00fff7]"
       >
@@ -61,24 +76,41 @@ export default function AIDevelopment() {
         {title}
       </motion.h2>
 
-      {/* Description Paragraphs */}
+      {/* Paragraph Cards */}
       <motion.div
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
         transition={{ delayChildren: 0.4 }}
         viewport={{ once: true }}
-        className="mt-8 max-w-5xl space-y-6 text-justify"
+        className="mt-10 max-w-5xl w-full flex flex-col gap-8 px-2 sm:px-0"
       >
-        {paragraphs.map((text, i) => (
-          <motion.p
+        {paragraphs.map((item, i) => (
+          <motion.div
             key={i}
-            variants={paragraphVariant}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="text-gray-300 font-['Inter'] text-base sm:text-lg leading-7 sm:leading-8"
+            variants={cardVariant}
+            whileHover={{ scale: 1.025, boxShadow: "0 0 32px #22d3ee55" }}
+            whileTap={{ scale: 0.97, boxShadow: "0 0 40px #06b6d455" }}
+            className="relative bg-[#101c24]/80 border-2 border-transparent rounded-2xl p-6 sm:p-8 shadow-lg transition-all
+              before:content-[''] before:absolute before:inset-0 before:rounded-2xl before:pointer-events-none
+              before:bg-gradient-to-r before:from-cyan-400 before:via-blue-500 before:to-cyan-400 before:opacity-60
+              before:blur-[6px] before:z-0
+              after:content-[''] after:absolute after:inset-0 after:rounded-2xl after:pointer-events-none
+              after:border-2 after:border-cyan-400 after:opacity-60 after:z-10"
+            style={{
+              boxShadow: "0 0 24px 0 #22d3ee33",
+              overflow: "hidden",
+            }}
           >
-            {text}
-          </motion.p>
+            <div className="relative z-20">
+              <h3 className="text-xl sm:text-2xl font-bold mb-2 text-cyan-300">
+                {item.title}
+              </h3>
+              <p className="text-white/90 font-['Inter'] text-base sm:text-lg leading-7 sm:leading-8 text-left sm:text-justify">
+                {item.text}
+              </p>
+            </div>
+          </motion.div>
         ))}
       </motion.div>
     </section>

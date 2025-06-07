@@ -108,9 +108,14 @@ export default function Telemedicine() {
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ duration: 1, ease: "easeOut" }}
       >
-        <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight bg-gradient-to-r from-blue-600 via-indigo-700 to-purple-700 bg-clip-text text-transparent drop-shadow-[0_0_25px_rgba(99,102,241,0.5)] mb-4 animate-pulse">
+        <h1
+          className="text-4xl sm:text-6xl font-extrabold tracking-tight bg-gradient-to-r from-blue-600 via-indigo-700 to-purple-700 bg-clip-text text-transparent drop-shadow-[0_0_25px_rgba(99,102,241,0.5)] mb-4 animate-pulse select-none break-words"
+          style={{ wordBreak: "break-word" }}
+        >
           <span>{title}</span>
-          <Cursor />
+          <span className="pointer-events-none select-none align-middle">
+            <Cursor />
+          </span>
         </h1>
 
         {/* Main descriptive paragraph */}

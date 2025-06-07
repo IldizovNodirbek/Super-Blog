@@ -8,15 +8,15 @@ const Blockchain = lazy(() => import("../Components/Blockchain"));
 const IOT = lazy(() => import("../Components/IOT"));
 
 const sections = [
-  "AI rivoji",
-  "Kvant kompyuterlar",
+  "AI development",
+  "Quantum computers",
   "IOT",
-  "5G tarmoqlar",
+  "5G networks",
   "Blockchain",
 ];
 
 export default function CurrentTechnologies() {
-  const [selected, setSelected] = useState("AI rivoji");
+  const [selected, setSelected] = useState("AI development");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
@@ -28,13 +28,13 @@ export default function CurrentTechnologies() {
 
   const renderSectionContent = () => {
     switch (selected) {
-      case "AI rivoji":
+      case "AI development":
         return <AIDevelopment />;
-      case "Kvant kompyuterlar":
+      case "Quantum computers":
         return <KvantComputers />;
       case "IOT":
         return <IOT />;
-      case "5G tarmoqlar":
+      case "5G networks":
         return <FiveG />;
       case "Blockchain":
         return <Blockchain />;
@@ -83,7 +83,7 @@ export default function CurrentTechnologies() {
             className="w-72 p-6 bg-[#0e153a]/80 backdrop-blur-md shadow-2xl border-r-4 border-cyan-500 fixed top-0 left-0 h-full overflow-y-auto z-30"
           >
             <h2 className="text-2xl font-bold mb-10 text-cyan-400 tracking-wider text-center drop-shadow-[0_0_10px_#00fff7]">
-              Bo'limlar
+              Sections
             </h2>
             <ul className="space-y-6">
               {sections.map((section) => (
@@ -109,9 +109,7 @@ export default function CurrentTechnologies() {
 
       {/* Main Content */}
       <main className="flex-1 md:ml-72 p-10 space-y-10">
-        <Suspense
-          fallback={<div className="text-cyan-300">Yuklanmoqda...</div>}
-        >
+        <Suspense fallback={<div className="text-cyan-300">Loading...</div>}>
           {renderSectionContent()}
         </Suspense>
       </main>
