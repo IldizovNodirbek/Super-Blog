@@ -4,18 +4,18 @@ import { Link } from "react-router-dom";
 export default function ArticleSection() {
   const cards = [
     {
-      title: "Kelajakdagi Texnologiyalar",
-      text: "Sun'iy intellekt va robototexnika haqida eng so'nggi maqolalar.",
+      title: "Future Technologies",
+      text: "Latest articles on artificial intelligence and robotics.",
       path: "/current-technologies", // Route qo‘shamiz
     },
     {
-      title: "Tibbiyot inqilobi",
-      text: "Tibbiyotda yangi texnologiyalar va innovatsiyalar boyicha maqolalar.",
+      title: "Medical Revolution",
+      text: "Articles on new technologies and innovations in medicine.",
       path: "medical-revolution"
     },
     {
-      title: "2025 - yil kasblari",
-      text: "2025-yilda eng talabgor kasblar va ularning rivojlanishi bo'yicha maqolalar.",
+      title: "Future Jobs",
+      text: "Articles on the most in-demand professions and their development in 2025 and in the future.",
       path: "2025-year-jobs"
     },
   ];

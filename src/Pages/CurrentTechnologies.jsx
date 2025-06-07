@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect, Suspense, lazy } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-import AIDevelopment from "../Components/AIDevelopment"; 
-import KvantComputers from "../Components/KvantComputers";
-import FiveG from "../Components/FiveG";
-import Blockchain from "../Components/Blockchain";
-import IOT from "../Components/IOT";
+const AIDevelopment = lazy(() => import("../Components/AIDevelopment"));
+const KvantComputers = lazy(() => import("../Components/KvantComputers"));
+const FiveG = lazy(() => import("../Components/FiveG"));
+const Blockchain = lazy(() => import("../Components/Blockchain"));
+const IOT = lazy(() => import("../Components/IOT"));
 
 const sections = [
   "AI rivoji",
@@ -18,6 +18,13 @@ const sections = [
 export default function CurrentTechnologies() {
   const [selected, setSelected] = useState("AI rivoji");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const renderSectionContent = () => {
     switch (selected) {
@@ -38,52 +45,42 @@ export default function CurrentTechnologies() {
 
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-[#0e153a] via-[#1c1f4a] to-[#020314] text-white font-orbitron relative">
-      {/* Hamburger Button */}
-      <div className="md:hidden fixed top-4 right-4 z-40">
-        <button
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="relative w-10 h-10 flex flex-col justify-center items-center group"
-        >
-          {/* Top line */}
-          <motion.span
-            initial={false}
-            animate={{
-              rotate: isMenuOpen ? 45 : 0,
-              y: isMenuOpen ? 8 : 0,
-            }}
-            className="block w-8 h-1 bg-cyan-400 rounded-md mb-1 origin-center transition-all duration-300"
-          />
-          {/* Middle line */}
-          <motion.span
-            initial={false}
-            animate={{
-              opacity: isMenuOpen ? 0 : 1,
-            }}
-            className="block w-8 h-1 bg-cyan-400 rounded-md mb-1 transition-all duration-300"
-          />
-          {/* Bottom line */}
-          <motion.span
-            initial={false}
-            animate={{
-              rotate: isMenuOpen ? -45 : 0,
-              y: isMenuOpen ? -8 : 0,
-            }}
-            className="block w-8 h-1 bg-cyan-400 rounded-md transition-all duration-300"
-          />
-        </button>
-      </div>
+      {/* Hamburger */}
+      {isMobile && (
+        <div className="fixed top-4 right-4 z-40">
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="relative w-10 h-10 flex flex-col justify-center items-center group"
+          >
+            <motion.span
+              animate={{ rotate: isMenuOpen ? 45 : 0, y: isMenuOpen ? 8 : 0 }}
+              transition={{ duration: 0.3 }}
+              className="block w-8 h-1 bg-cyan-400 rounded-md mb-1"
+            />
+            <motion.span
+              animate={{ opacity: isMenuOpen ? 0 : 1 }}
+              transition={{ duration: 0.3 }}
+              className="block w-8 h-1 bg-cyan-400 rounded-md mb-1"
+            />
+            <motion.span
+              animate={{ rotate: isMenuOpen ? -45 : 0, y: isMenuOpen ? -8 : 0 }}
+              transition={{ duration: 0.3 }}
+              className="block w-8 h-1 bg-cyan-400 rounded-md"
+            />
+          </button>
+        </div>
+      )}
 
       {/* Sidebar */}
       <AnimatePresence>
-        {(isMenuOpen || window.innerWidth >= 768) && (
+        {(!isMobile || isMenuOpen) && (
           <motion.aside
             key="sidebar"
             initial={{ x: -300 }}
             animate={{ x: 0 }}
             exit={{ x: -300 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="w-72 p-6 bg-[#0e153a]/80 backdrop-blur-md shadow-2xl border-r-4 border-cyan-500 
-            fixed top-0 left-0 h-full overflow-y-auto z-30"
+            className="w-72 p-6 bg-[#0e153a]/80 backdrop-blur-md shadow-2xl border-r-4 border-cyan-500 fixed top-0 left-0 h-full overflow-y-auto z-30"
           >
             <h2 className="text-2xl font-bold mb-10 text-cyan-400 tracking-wider text-center drop-shadow-[0_0_10px_#00fff7]">
               Bo'limlar
@@ -94,14 +91,13 @@ export default function CurrentTechnologies() {
                   key={section}
                   onClick={() => {
                     setSelected(section);
-                    if (window.innerWidth < 768) setIsMenuOpen(false);
+                    if (isMobile) setIsMenuOpen(false);
                   }}
-                  className={`cursor-pointer px-6 py-3 rounded-lg text-lg transition-all duration-300
-                    ${
-                      selected === section
-                        ? "bg-cyan-600 text-black font-extrabold shadow-[0_0_20px_#00fff7]"
-                        : "text-cyan-300 hover:bg-cyan-700/30 hover:scale-105"
-                    }`}
+                  className={`cursor-pointer px-6 py-3 rounded-lg text-lg transition-all duration-300 ${
+                    selected === section
+                      ? "bg-cyan-600 text-black font-extrabold shadow-[0_0_20px_#00fff7]"
+                      : "text-cyan-300 hover:bg-cyan-700/30 hover:scale-105"
+                  }`}
                 >
                   {section}
                 </li>
@@ -113,7 +109,11 @@ export default function CurrentTechnologies() {
 
       {/* Main Content */}
       <main className="flex-1 md:ml-72 p-10 space-y-10">
-        {renderSectionContent()}
+        <Suspense
+          fallback={<div className="text-cyan-300">Yuklanmoqda...</div>}
+        >
+          {renderSectionContent()}
+        </Suspense>
       </main>
     </div>
   );

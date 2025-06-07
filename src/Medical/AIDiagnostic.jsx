@@ -1,32 +1,45 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import heroImage from "../Images/diagnostic-ai-hero.png";
 import diagnostic1 from "../Images/diagnostic-1.png";
 import diagnostic2 from "../Images/diagnostic-2.png";
 import diagnostic3 from "../Images/diagnostic-3.png";
+import diagnostic4 from "../Images/diagnostic-4.png";
 
 const cardData = [
   {
     img: diagnostic1,
-    title: "Real Vaqtli Tahlil",
-    desc: "Ilg‘or monitor va algoritmlar yordamida sog‘liq ma’lumotlarini aniqlik bilan kuzatib boring.",
+    title: "Real time analysis",
+    desc: "Track your health data accurately with advanced monitors and algorithms.",
   },
   {
     img: diagnostic2,
-    title: "Ko‘rgazmali Diagnostika",
-    desc: "Miya vizualizatsiyasi va rentgen tasvirlari orqali bilim va hamkorlik ruhini his eting.",
+    title: "Visual diagnostics",
+    desc: "Experience the spirit of knowledge and collaboration through brain visualization and X-ray imaging.",
   },
   {
     img: diagnostic3,
-    title: "Sun’iy Intellekt Diagnostikasi",
-    desc: "Avtomatlashtirilgan tahlil va raqamli interfeyslar bilan tezkor va aniqlikni ta’minlang.",
+    title: "Artificial Intelligence Diagnostics",
+    desc: "Ensure speed and accuracy with automated analysis and digital interfaces.",
   },
   {
-    img: "https://via.placeholder.com/300",
-    title: "Kelajak Tibbiyoti",
-    desc: "Holografik tizimlar va ilg‘or texnologiyalar bilan sog‘liqni yangi darajada boshqaring.",
+    img: diagnostic4,
+    title: "Future Medicine",
+    desc: "Take health care to a new level with holographic systems and advanced technology.",
   },
 ];
+
+function useIsMobile(breakpoint = 768) {
+  const [isMobile, setIsMobile] = React.useState(
+    window.innerWidth < breakpoint
+  );
+  React.useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < breakpoint);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [breakpoint]);
+  return isMobile;
+}
 
 const AIDiagnostic = () => {
   const { scrollYProgress } = useScroll();
@@ -35,11 +48,11 @@ const AIDiagnostic = () => {
 
   // Sarlavha uchun animatsiya
   const titleVariants = {
-    hidden: { opacity: 0, width: 0 },
+    hidden: { opacity: 0, y: 40 },
     visible: {
       opacity: 1,
-      width: "auto",
-      transition: { duration: 1.5, ease: "easeOut" },
+      y: 0,
+      transition: { duration: 1, ease: "easeOut" },
     },
   };
 
@@ -61,11 +74,12 @@ const AIDiagnostic = () => {
 
   // Hero rasm uchun animatsiya
   const heroImageVariants = {
-    hidden: { opacity: 0, scale: 0.8 },
+    hidden: { opacity: 0, scale: 0.8, y: 40 },
     visible: {
       opacity: 1,
       scale: 1,
-      transition: { duration: 1.5, ease: "easeOut" },
+      y: 0,
+      transition: { duration: 1.2, ease: "easeOut" },
     },
   };
 
@@ -83,6 +97,18 @@ const AIDiagnostic = () => {
     }),
   };
 
+  const isMobile = useIsMobile();
+  const [flipped, setFlipped] = useState(Array(cardData.length).fill(false));
+
+  // For desktop: flip on hover, for mobile: flip on tap
+  const handleFlip = (idx, value) => {
+    setFlipped((prev) => {
+      const copy = [...prev];
+      copy[idx] = value !== undefined ? value : !copy[idx];
+      return copy;
+    });
+  };
+
   return (
     <motion.div
       className="w-full min-h-screen text-gray-900 py-16 px-6 lg:px-24 font-lato"
@@ -93,12 +119,12 @@ const AIDiagnostic = () => {
       <div className="max-w-7xl mx-auto">
         {/* Sarlavha */}
         <motion.h1
-          className="text-5xl md:text-6xl font-bold mb-6 tracking-wide text-center text-blue-600 overflow-hidden"
+          className="text-5xl md:text-6xl font-bold mb-6 tracking-wide text-center text-blue-600"
           variants={titleVariants}
           initial="hidden"
           animate="visible"
         >
-          AI Diagnostika
+          AI Diagnostics
         </motion.h1>
 
         {/* Paragraf */}
@@ -108,7 +134,7 @@ const AIDiagnostic = () => {
           initial="hidden"
           animate="visible"
         >
-          {"Diagnostikaning zamonaviy bosqichi sun’iy intellekt yordamida klinik qarorlar qabul qilishni yangi bosqichga olib chiqmoqda. Yuqori aniqlikka ega AI tizimlari real vaqtli tahlillar, chuqur o‘rganilgan neyrotarmoq modellari, va ilg‘or tasvir tahlili orqali kasalliklarni oldindan aniqlash imkonini beradi."
+          {"The modern stage of diagnostics is taking clinical decision-making to a new level with the help of artificial intelligence. High-precision AI systems enable early detection of diseases through real-time analysis, deeply learned neural network models, and advanced image analysis."
             .split(" ")
             .map((word, index) => (
               <motion.span key={index} variants={wordVariants}>
@@ -131,55 +157,68 @@ const AIDiagnostic = () => {
             alt="AI Diagnostic Hero"
             className="w-full h-auto object-cover"
             loading="lazy"
+            draggable={false}
           />
         </motion.div>
 
         {/* Flip Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {cardData.map((card, index) => (
-            <motion.div
-              key={index}
-              className="relative w-full h-[300px] rounded-xl overflow-hidden"
-              custom={index}
-              variants={cardVariants}
-              initial="hidden"
-              animate="visible"
-              whileHover={{
-                scale: 1.05,
-                boxShadow: "0 0 20px rgba(37, 99, 235, 0.5)",
-              }}
-            >
-              {/* Front Side */}
+          {cardData.map((card, index) => {
+            const isCardFlipped = flipped[index];
+            return (
               <motion.div
-                className="absolute w-full h-full"
-                animate={{ rotateY: 0 }}
-                whileHover={{ rotateY: 180 }}
-                transition={{ duration: 0.8, ease: "easeInOut" }}
-                style={{ backfaceVisibility: "hidden" }}
+                key={index}
+                className="relative w-full h-[300px] rounded-xl overflow-hidden"
+                custom={index}
+                variants={cardVariants}
+                initial="hidden"
+                animate="visible"
+                whileHover={
+                  !isMobile
+                    ? {
+                        scale: 1.05,
+                        boxShadow: "0 0 20px rgba(37, 99, 235, 0.5)",
+                      }
+                    : {}
+                }
+                onClick={() => isMobile && handleFlip(index)}
+                onMouseEnter={() => !isMobile && handleFlip(index, true)}
+                onMouseLeave={() => !isMobile && handleFlip(index, false)}
+                style={{
+                  perspective: 1000,
+                  cursor: isMobile ? "pointer" : "default",
+                }}
               >
-                <img
-                  src={card.img}
-                  alt={card.title}
-                  className="w-full h-full object-cover rounded-xl"
-                  loading="lazy"
-                />
-              </motion.div>
+                {/* Front Side */}
+                <motion.div
+                  className="absolute w-full h-full"
+                  animate={{ rotateY: isCardFlipped ? 180 : 0 }}
+                  transition={{ duration: 0.8, ease: "easeInOut" }}
+                  style={{ backfaceVisibility: "hidden" }}
+                >
+                  <img
+                    src={card.img}
+                    alt={card.title}
+                    className="w-full h-full object-cover rounded-xl"
+                    loading="lazy"
+                  />
+                </motion.div>
 
-              {/* Back Side */}
-              <motion.div
-                className="absolute w-full h-full bg-blue-100 flex flex-col justify-center items-center text-center p-4"
-                animate={{ rotateY: -180 }}
-                whileHover={{ rotateY: 0 }}
-                transition={{ duration: 0.8, ease: "easeInOut" }}
-                style={{ backfaceVisibility: "hidden" }}
-              >
-                <h3 className="font-bold text-xl mb-2 text-blue-600">
-                  {card.title}
-                </h3>
-                <p className="text-sm text-gray-700">{card.desc}</p>
+                {/* Back Side */}
+                <motion.div
+                  className="absolute w-full h-full bg-blue-100 flex flex-col justify-center items-center text-center p-4"
+                  animate={{ rotateY: isCardFlipped ? 0 : -180 }}
+                  transition={{ duration: 0.8, ease: "easeInOut" }}
+                  style={{ backfaceVisibility: "hidden" }}
+                >
+                  <h3 className="font-bold text-xl mb-2 text-blue-600">
+                    {card.title}
+                  </h3>
+                  <p className="text-sm text-gray-700">{card.desc}</p>
+                </motion.div>
               </motion.div>
-            </motion.div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </motion.div>

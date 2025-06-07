@@ -1,6 +1,6 @@
 import { useTypewriter, Cursor } from "react-simple-typewriter";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import heroImg1 from "../Images/telemedicine-hero-1.png";
 import heroImg2 from "../Images/telemedicine-hero-2.png";
 import heroImg3 from "../Images/telemedicine-hero-3.png";
@@ -40,65 +40,133 @@ const faqs = [
   },
 ];
 
+// Responsive hook for fan layout
+function useIsMobile(breakpoint = 768) {
+  const [isMobile, setIsMobile] = useState(window.innerWidth < breakpoint);
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < breakpoint);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [breakpoint]);
+  return isMobile;
+}
+
 export default function Telemedicine() {
   const [selectedImg, setSelectedImg] = useState(null);
   const [expanded, setExpanded] = useState(null);
+  const isMobile = useIsMobile();
+
+  // Typewriter for title
+  const [title] = useTypewriter({
+    words: ["Telemedicine"],
+    loop: false,
+    typeSpeed: 90,
+    deleteSpeed: 50,
+    delaySpeed: 1200,
+  });
 
   const toggleAccordion = (index) => {
     setExpanded(expanded === index ? null : index);
   };
 
+  // Animation variants for fan images
+  const fanVariants = {
+    initial: (i) => ({
+      opacity: 0,
+      scale: 0.7,
+      y: 60,
+      rotate: isMobile ? 0 : (i - 1) * 18,
+      x: isMobile ? 0 : (i - 1) * 140,
+      zIndex: 10 + i,
+    }),
+    animate: (i) => ({
+      opacity: 1,
+      scale: 1,
+      y: 0,
+      rotate: isMobile ? 0 : (i - 1) * 18,
+      x: isMobile ? 0 : (i - 1) * 140,
+      zIndex: 10 + i,
+      transition: { type: "spring", stiffness: 120, delay: i * 0.13 },
+    }),
+    hover: {
+      scale: 1.12,
+      boxShadow: "0 8px 40px 0 rgba(59,130,246,0.25)",
+      zIndex: 30,
+      transition: { type: "spring", stiffness: 300 },
+    },
+    tap: {
+      scale: 0.97,
+      boxShadow: "0 2px 24px 0 rgba(59,130,246,0.35)",
+    },
+  };
+
   return (
-    <div className="font-[Lato] bg-white min-h-screen py-10 px-4 relative overflow-hidden">
-      {/* Typewriter Title */}
-      <div className="text-center mb-10">
-        <h1 className="text-4xl sm:text-5xl font-bold text-blue-700">
-          <span>
-            {
-              useTypewriter({
-                words: ["Telemedicine"],
-                loop: false,
-                typeSpeed: 100,
-                deleteSpeed: 50,
-              })[0]
-            }
-            <Cursor />
-          </span>
+    <div className=" min-h-screen py-10 px-4 relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-blue-100">
+      <motion.div
+        className="text-center mb-10"
+        initial={{ opacity: 0, scale: 0.85, y: 30 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 1, ease: "easeOut" }}
+      >
+        <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight bg-gradient-to-r from-blue-600 via-indigo-700 to-purple-700 bg-clip-text text-transparent drop-shadow-[0_0_25px_rgba(99,102,241,0.5)] mb-4 animate-pulse">
+          <span>{title}</span>
+          <Cursor />
         </h1>
-        <p className="mt-4 text-gray-600 max-w-xl mx-auto">
-          Bridging the gap between healthcare and technology, offering
-          convenient access to medical care remotely.
-        </p>
-      </div>
+
+        {/* Main descriptive paragraph */}
+        <motion.p
+          className="mt-6 text-gray-700 text-lg sm:text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed px-4"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.7, duration: 0.8 }}
+        >
+          Discover a revolutionary way to access healthcare—
+          <span className="text-blue-600 font-semibold">anywhere</span>,{" "}
+          <span className="text-blue-600 font-semibold">anytime</span>. With
+          Telemedicine, expert consultations, real-time diagnosis, and
+          prescriptions are now just a click away.
+        </motion.p>
+      </motion.div>
 
       {/* Fan-style Hero Images */}
-      <div className="relative mb-20" style={{ height: "420px" }}>
-        {images.map((img, i) => {
-          const rotate = (i - 1) * 15;
-          const translateX = (i - 1) * 160;
-
-          return (
-            <div
-              key={i}
-              className="absolute"
-              style={{
-                top: "50%",
-                left: "50%",
-                transform: `translate(-50%, -50%) rotate(${rotate}deg) translateX(${translateX}px)`,
-                transformOrigin: "center center",
-                zIndex: selectedImg === i ? 30 : 10,
-              }}
-            >
-              <motion.img
-                src={img}
-                onClick={() => setSelectedImg(i)}
-                className="w-64 cursor-pointer rounded-2xl border-4 border-white shadow-[0_0_50px_rgba(59,130,246,0.7)]"
-                whileHover={{ scale: 1.1 }}
-                transition={{ duration: 0.3 }}
-              />
-            </div>
-          );
-        })}
+      <div
+        className="relative mb-20 w-full max-w-4xl"
+        style={{
+          height: isMobile ? `${images.length * 220}px` : "540px",
+        }}
+      >
+        {images.map((img, i) => (
+          <motion.div
+            key={i}
+            className="absolute"
+            custom={i}
+            variants={fanVariants}
+            initial="initial"
+            animate="animate"
+            whileHover="hover"
+            whileTap="tap"
+            onClick={() => setSelectedImg(i)}
+            style={{
+              top: isMobile ? `${i * 180 + 20}px` : "50%",
+              left: "50%",
+              transform: isMobile
+                ? "translate(-50%, 0)"
+                : "translate(-50%, -50%)",
+              cursor: "pointer",
+              zIndex: selectedImg === i ? 40 : 10 + i,
+              transition: "z-index 0.2s",
+            }}
+          >
+            <motion.img
+              src={img}
+              alt={`Telemedicine hero ${i + 1}`}
+              className="w-80 rounded-2xl border-4 border-white shadow-[0_0_50px_rgba(59,130,246,0.7)] bg-white"
+              draggable={false}
+              whileHover={{ scale: 1.13 }}
+              transition={{ duration: 0.3 }}
+            />
+          </motion.div>
+        ))}
       </div>
 
       {/* Modal Image Viewer */}
@@ -117,13 +185,20 @@ export default function Telemedicine() {
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
+              alt="Telemedicine enlarged"
             />
           </motion.div>
         )}
       </AnimatePresence>
 
       {/* FAQ Section */}
-      <div className="bg-blue-100 rounded-3xl p-6 md:p-10 shadow-xl">
+      <motion.div
+        className="bg-blue-100 rounded-3xl p-6 md:p-10 shadow-xl"
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+      >
         <h2 className="text-2xl md:text-3xl font-semibold text-center text-blue-800 mb-8">
           Learn More About Telemedicine
         </h2>
@@ -157,7 +232,7 @@ export default function Telemedicine() {
             </AnimatePresence>
           </div>
         ))}
-      </div>
+      </motion.div>
     </div>
   );
 }

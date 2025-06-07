@@ -16,6 +16,7 @@
     "flubber": "^0.4.2",
     "framer-motion": "^12.7.4",
     "lucide-react": "^0.503.0",
+    "radix-ui": "^1.4.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.5.2",
