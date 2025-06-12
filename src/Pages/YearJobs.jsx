@@ -40,14 +40,14 @@ function TitleAnimation() {
   ];
 
   const gradients = [
-    "linear-gradient(90deg, #ff4d4d, #ff8787)",
-    "linear-gradient(90deg, #4dff4d, #87ff87)",
-    "linear-gradient(90deg, #4d4dff, #8787ff)",
-    "linear-gradient(90deg, #ffdf4d, #ffef87)",
-    "linear-gradient(90deg, #df4dff, #ef87ff)",
-    "linear-gradient(90deg, #4dffd4, #87ffef)",
-    "linear-gradient(90deg, #ffd44d, #ffef87)",
-    "linear-gradient(90deg, #ff4d9e, #ff87c3)",
+    "linear-gradient(90deg, #7ee8fa 0%, #232336 100%)",
+    "linear-gradient(90deg, #a7b8fa 0%, #3a3f5c 100%)",
+    "linear-gradient(90deg, #b8ffe7 0%, #2e3340 100%)",
+    "linear-gradient(90deg, #b5b9ff 0%, #232336 100%)",
+    "linear-gradient(90deg, #7ee8fa 0%, #b5b9ff 100%)",
+    "linear-gradient(90deg, #a7b8fa 0%, #b8ffe7 100%)",
+    "linear-gradient(90deg, #b8ffe7 0%, #7ee8fa 100%)",
+    "linear-gradient(90deg, #b5b9ff 0%, #a7b8fa 100%)",
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -71,7 +71,8 @@ function TitleAnimation() {
             backgroundImage: gradients[currentIndex],
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
-            textShadow: "0 0 10px rgba(255, 255, 255, 0.5)",
+            color: "transparent",
+            textShadow: "0 2px 8px rgba(126,232,250,0.25), 0 1px 0 #232336",
             transition: "background-image 0.5s",
           }}
           initial={{ opacity: 0, y: 20 }}
@@ -138,26 +139,46 @@ export default function YearJobs() {
           <motion.div
             key={job.id}
             className="mb-10 w-full max-w-md mx-auto relative"
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+            initial={{
+              opacity: 0,
+              scale: 0.7,
+              rotateY: 30,
+              y: 80,
+              filter: "blur(8px)",
+            }}
+            whileInView={{
+              opacity: 1,
+              scale: 1,
+              rotateY: 0,
+              y: 0,
+              filter: "blur(0px)",
+            }}
+            viewport={{ once: true, amount: 0.4 }}
             transition={{
-              duration: 0.8,
-              ease: "easeOut",
-              delay: index * 0.15,
+              duration: 1,
+              ease: [0.22, 1, 0.36, 1],
+              delay: index * 0.18,
             }}
           >
             <motion.div
               className="w-full rounded-2xl overflow-hidden border-4"
               style={{
-                borderImage: "linear-gradient(45deg, #00f0ff, #00ff85) 1",
-                boxShadow:
-                  "0 0 12px #00f0ff, inset 0 0 6px rgba(0, 240, 255, 0.3)",
+                borderImage: "linear-gradient(45deg, #232336, #3a3f5c) 1",
+                boxShadow: "0 0 12px #232336, inset 0 0 6px #3a3f5c80",
                 padding: "8px",
                 background: "linear-gradient(45deg, #181824, #232336)",
                 aspectRatio: "16 / 9",
               }}
-              whileHover={{ scale: 1.04, boxShadow: "0 0 18px #00f0ff" }}
-              transition={{ duration: 0.3 }}
+              whileHover={{
+                scale: 1.06,
+                rotateZ: 2,
+                boxShadow: "0 0 32px #7ee8fa55, 0 0 0 4px #2e3340",
+              }}
+              whileTap={{
+                scale: 0.97,
+                rotateZ: -2,
+              }}
+              transition={{ duration: 0.25 }}
             >
               <motion.img
                 src={job.heroImage}
@@ -176,16 +197,39 @@ export default function YearJobs() {
           <motion.div
             key={job.id}
             className="flex justify-center"
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: 200, rotateZ: 30, scale: 0.8 }}
+            whileInView={{
+              opacity: 1,
+              x: 0,
+              rotateZ: 0,
+              scale: [1, 1.12, 1], // <-- keyframes: normal, grow, settle
+            }}
+            viewport={{ once: true, amount: 0.3 }}
             transition={{
-              delay: index * 0.08,
+              delay: index * 0.18,
+              duration: 1.2 + index * 0.15, // slightly longer for the two-step effect
               type: "spring",
-              stiffness: 100,
-              damping: 15,
+              stiffness: 80,
+              damping: 18,
+              scale: {
+                times: [0, 0.7, 1], // grow after 70% of the animation, then settle
+              },
             }}
           >
-            <div className="bg-[#232336] border border-white/20 rounded-2xl overflow-hidden w-full max-w-xs shadow-xl hover:scale-105 transition-transform duration-300">
+            <motion.div
+              className="bg-[#232336] border border-white/20 rounded-2xl overflow-hidden w-full max-w-xs shadow-xl"
+              whileHover={{
+                boxShadow: "0 0 24px 2px #3a3f5c, 0 0 0 4px #2e3340",
+                background: "linear-gradient(135deg, #232336 80%, #2e3340 100%)",
+                borderImage: "linear-gradient(90deg, #3a3f5c, #2e3340) 1",
+                scale: 1.05,
+              }}
+              whileTap={{
+                background: "linear-gradient(135deg, #232336 60%, #3a3f5c 100%)",
+                scale: 0.98,
+              }}
+              transition={{ duration: 0.3 }}
+            >
               <img
                 src={job.image}
                 alt={job.title}
@@ -196,7 +240,7 @@ export default function YearJobs() {
                   {job.title.replace("Who is a ", "").replace("?", "")}
                 </h2>
               </div>
-            </div>
+            </motion.div>
           </motion.div>
         ))}
       </div>
@@ -214,12 +258,40 @@ export default function YearJobs() {
             {job.title}
           </h2>
           {job.paragraphs.map((paragraph, pIndex) => (
-            <div key={pIndex} className="mb-4">
+            <motion.div
+              key={pIndex}
+              initial={{
+                opacity: 0,
+                y: 40,
+                scale: 0.96,
+                skewY: 4,
+                rotateZ: -2,
+              }}
+              whileInView={{
+                opacity: 1,
+                y: 0,
+                scale: [1, 1.04, 1],
+                skewY: [4, 0, 0],
+                rotateZ: [ -2, 1, 0 ],
+              }}
+              viewport={{ once: true, amount: 0.7 }}
+              transition={{
+                delay: 0.25 + pIndex * 0.18,
+                duration: 0.95,
+                type: "spring",
+                stiffness: 60,
+                damping: 18,
+                scale: { times: [0, 0.7, 1] },
+                skewY: { times: [0, 0.6, 1] },
+                rotateZ: { times: [0, 0.7, 1] },
+              }}
+              className="mb-4"
+            >
               <p className="text-[#ccc] font-['Roboto'] font-light text-base sm:text-lg leading-relaxed tracking-wide text-justify">
                 {paragraph}
               </p>
               <div className="w-full h-px bg-gray-600/50 my-3"></div>
-            </div>
+            </motion.div>
           ))}
         </motion.div>
       ))}
